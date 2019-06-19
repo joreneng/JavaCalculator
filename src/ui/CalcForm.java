@@ -5,12 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CalcForm extends JFrame{
+    private double firstNum;
+    private double secondNum;
+    private double result;
+    private String currOp;
+
     private JTextField inputTextField;
     private JButton butt0, butt1, butt2, butt3, butt4, butt5, butt6, butt7, butt8, butt9; //buttons 1 - 9
     private JButton add, subtract, divide, multiply, modulus, decimalPt, clearAll, equal, backspace; //buttons for simple math fxns
-    private JPanel panel;
+    private JPanel mainPanel;
 
     public CalcForm() {
+        //actions for number buttons
         butt1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,5 +96,114 @@ public class CalcForm extends JFrame{
                 inputTextField.setText(display);
             }
         });
+
+        //action for clear button
+        clearAll.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inputTextField.setText("");
+            }
+        });
+
+        //action for math operation buttons
+        add.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firstNum = Double.parseDouble(inputTextField.getText());
+                inputTextField.setText("");
+                currOp = "+";
+            }
+        });
+
+        subtract.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firstNum = Double.parseDouble(inputTextField.getText());
+                inputTextField.setText("");
+                currOp = "-";
+            }
+        });
+
+        multiply.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firstNum = Double.parseDouble(inputTextField.getText());
+                inputTextField.setText("");
+                currOp = "*";
+            }
+        });
+
+        divide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firstNum = Double.parseDouble(inputTextField.getText());
+                inputTextField.setText("");
+                currOp = "/";
+            }
+        });
+
+        modulus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firstNum = Double.parseDouble(inputTextField.getText());
+                inputTextField.setText("");
+                currOp = "%";
+            }
+        });
+
+        //action to add a decimal point
+        decimalPt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String display = inputTextField.getText() + decimalPt.getText();
+                inputTextField.setText(display);
+            }
+        });
+
+
+        //action for the equal button
+        equal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                secondNum = Double.parseDouble(inputTextField.getText());
+                switch (currOp) {
+                    case "+":
+                        result = firstNum + secondNum;
+                        break;
+                    case "-":
+                        result = firstNum - secondNum;
+                        break;
+                    case "*":
+                        result = firstNum*secondNum;
+                        break;
+                    case "/":
+                        result = firstNum/secondNum;
+                        break;
+                    case "%":
+                        result = firstNum%secondNum;
+                        break;
+                }
+                inputTextField.setText(String.format("%.0f", result));
+            }
+        });
+
+        backspace.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (inputTextField.getText().length() != 0) {
+                    String display = inputTextField.getText();
+                    inputTextField.setText(display.substring(0, display.length() - 1));
+                }
+            }
+        });
     }
+
+    public static void main(String[] args) {
+        JFrame mainFrame = new JFrame("Calculator");
+        mainFrame.setContentPane(new CalcForm().mainPanel);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+    }
+
 }
